@@ -231,7 +231,11 @@ static void
 service_process_setup_environment(struct service *service, unsigned int uid,
 				  const char *hostdomain)
 {
+       const char *snap;
+
+       snap = getenv("SNAP");
 	master_service_env_clean();
+       setenv("SNAP", snap, 1);
 
 	env_put(MASTER_IS_PARENT_ENV"=1");
 	service_process_setup_config_environment(service);

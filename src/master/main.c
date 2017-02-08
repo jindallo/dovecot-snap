@@ -732,6 +732,7 @@ int main(int argc, char *argv[])
 	bool foreground = FALSE, ask_key_pass = FALSE;
 	bool doubleopts[argc];
 	int i, c;
+       const char *snap;
 
 #ifdef DEBUG
 	if (getenv("GDB") == NULL)
@@ -858,7 +859,10 @@ int main(int argc, char *argv[])
 	T_BEGIN {
 		master_set_import_environment(set);
 	} T_END;
+
+       snap = getenv("SNAP");
 	master_service_env_clean();
+       setenv("SNAP", snap, 1);
 
 	/* create service structures from settings. if there are any errors in
 	   service configuration we'll catch it here. */

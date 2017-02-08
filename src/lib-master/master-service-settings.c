@@ -134,8 +134,8 @@ master_service_exec_config(struct master_service *service,
 	i = 0;
 	argv_max_count = 11 + (service->argc + 1) + 1;
 	conf_argv = t_new(const char *, argv_max_count);
-	conf_argv[i++] = DOVECOT_CONFIG_BIN_PATH;
-	if (input->service != NULL) {
+	conf_argv[i++] = t_strconcat(getenv("SNAP"), "/bin/doveconf", NULL);
+       if (input->service != NULL) {
 		conf_argv[i++] = "-f";
 		conf_argv[i++] = t_strconcat("service=", input->service, NULL);
 	}
@@ -210,9 +210,9 @@ master_service_open_config(struct master_service *service,
 		   configuration may contain secrets, so in default config
 		   this fails because the socket is 0600. it's useful for
 		   developers though. :) */
-		fd = net_connect_unix(DOVECOT_CONFIG_SOCKET_PATH);
+		fd = net_connect_unix(t_strconcat(getenv("SNAP_COMMON"), "/dovecot/base/config", NULL));
 		if (fd >= 0) {
-			*path_r = DOVECOT_CONFIG_SOCKET_PATH;
+			*path_r = t_strconcat(getenv("SNAP_COMMON"), "/dovecot/base/config", NULL);
 			net_set_nonblock(fd, FALSE);
 			return fd;
 		}
