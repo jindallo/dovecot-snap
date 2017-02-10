@@ -207,7 +207,7 @@ master_service_init(const char *name, enum master_service_flags flags,
 
 	service->config_path = i_strdup(getenv(MASTER_CONFIG_FILE_ENV));
 	if (service->config_path == NULL)
-		service->config_path = i_strdup(t_strconcat(getenv("SNAP_COMMON"), "/dovecot/dovecot.conf", NULL));
+		service->config_path = i_strdup(t_strconcat(getenv("SNAP_DATA"), "/dovecot/config/dovecot.conf", NULL));
 	else
 		service->config_path_from_master = TRUE;
 

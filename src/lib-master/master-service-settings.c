@@ -210,9 +210,9 @@ master_service_open_config(struct master_service *service,
 		   configuration may contain secrets, so in default config
 		   this fails because the socket is 0600. it's useful for
 		   developers though. :) */
-		fd = net_connect_unix(t_strconcat(getenv("SNAP_COMMON"), "/dovecot/base/config", NULL));
+		fd = net_connect_unix(t_strconcat(getenv("SNAP_DATA"), "/dovecot/base/config", NULL));
 		if (fd >= 0) {
-			*path_r = t_strconcat(getenv("SNAP_COMMON"), "/dovecot/base/config", NULL);
+			*path_r = t_strconcat(getenv("SNAP_DATA"), "/dovecot/base/config", NULL);
 			net_set_nonblock(fd, FALSE);
 			return fd;
 		}

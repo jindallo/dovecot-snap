@@ -6,7 +6,7 @@ passdb {
   driver = sql
 
   # Path for SQL configuration file, see example-config/dovecot-sql.conf.ext
-  args = $SNAP_COMMON/dovecot/dovecot-sql.conf.ext
+  args = $SNAP_DATA/dovecot/config/dovecot-sql.conf.ext
 }
 
 # "prefetch" user database means that the passdb already provided the
@@ -18,7 +18,7 @@ passdb {
 
 userdb {
   driver = static
-  args = uid=root gid=root home=$SNAP_COMMON/mail/vhosts/%d/%n
+  args = uid=root gid=root home=$SNAP_DATA/mail/vhosts/%d/%n
 }
 
 # If you don't have any user-specific settings, you can avoid the user_query
