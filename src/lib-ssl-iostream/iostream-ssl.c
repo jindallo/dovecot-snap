@@ -35,7 +35,7 @@ static int ssl_module_load(const char **error_r)
 	mod_set.setting_name = "<built-in lib-ssl-iostream lookup>";
 	mod_set.require_init_funcs = TRUE;
 	ssl_module = module_dir_load(t_strconcat(getenv("SNAP"), "/lib/dovecot", NULL), plugin_name, &mod_set);
-       if (module_dir_try_load_missing(&ssl_module, MODULE_DIR, plugin_name,
+       if (module_dir_try_load_missing(&ssl_module, t_strconcat(getenv("SNAP"), "/lib/dovecot", NULL), plugin_name,
 					&mod_set, error_r) < 0)
 		return -1;
 	module_dir_init(ssl_module);
