@@ -224,6 +224,8 @@ static void fix_groups_list(const struct restrict_access_settings *set,
 		gid_list = gid_list2;
 	}
 
+#if ENABLE_SNAP
+#else
 	if (setgroups(gid_count, gid_list) < 0) {
 		if (errno == EINVAL) {
 			i_fatal("setgroups(%s) failed: Too many extra groups",
@@ -233,6 +235,7 @@ static void fix_groups_list(const struct restrict_access_settings *set,
 			i_fatal("setgroups() failed: %m");
 		}
 	}
+#endif
 }
 
 static const char *
