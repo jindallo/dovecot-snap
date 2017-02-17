@@ -231,13 +231,22 @@ static void
 service_process_setup_environment(struct service *service, unsigned int uid,
 				  const char *hostdomain)
 {
-       const char *snap;
+    const char *snap, *snap_data;
+    const char *ld_library_path;
 
-       snap = getenv("SNAP");
+#if USE_SNAP
+    snap = getenv("SNAP");
+    snap_data = getenv("SNAP_DATA");
+    ld_library_path = getenv("LD_LIBRARY_PATH");
+#endif
 	master_service_env_clean();
-       setenv("SNAP", snap, 1);
+#if USE_SNAP
+    setenv("LD_LIBRARY_PATH", ld_library_path, 1);
+    setenv("SNAP_DATA", snap_data, 1);
+    setenv("SNAP", snap, 1);
+#endif
 
-	env_put(MASTER_IS_PARENT_ENV"=1");
+    env_put(MASTER_IS_PARENT_ENV"=1");
 	service_process_setup_config_environment(service);
 	env_put(t_strdup_printf(MASTER_CLIENT_LIMIT_ENV"=%u",
 				service->client_limit));

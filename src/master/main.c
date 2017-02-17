@@ -728,11 +728,12 @@ int main(int argc, char *argv[])
 {
 	struct master_settings *set;
 	const char *error, *doveconf_arg = NULL;
-	failure_callback_t *orig_info_callback, *orig_debug_callback;
+    const char *snap, *snap_data;
+    const char *ld_library_path;
+    failure_callback_t *orig_info_callback, *orig_debug_callback;
 	bool foreground = FALSE, ask_key_pass = FALSE;
 	bool doubleopts[argc];
 	int i, c;
-       const char *snap;
 
 #ifdef DEBUG
 	if (getenv("GDB") == NULL)
@@ -860,9 +861,17 @@ int main(int argc, char *argv[])
 		master_set_import_environment(set);
 	} T_END;
 
-       snap = getenv("SNAP");
-	master_service_env_clean();
-       setenv("SNAP", snap, 1);
+#if USE_SNAP
+    snap = getenv("SNAP");
+    snap_data = getenv("SNAP_DATA");
+    ld_library_path = getenv("LD_LIBRARY_PATH");
+#endif
+    master_service_env_clean();
+#if USE_SNAP
+    setenv("LD_LIBRARY_PATH", ld_library_path, 1);
+    setenv("SNAP_DATA", snap_data, 1);
+    setenv("SNAP", snap, 1);
+#endif
 
 	/* create service structures from settings. if there are any errors in
 	   service configuration we'll catch it here. */
