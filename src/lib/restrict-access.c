@@ -224,7 +224,7 @@ static void fix_groups_list(const struct restrict_access_settings *set,
 		gid_list = gid_list2;
 	}
 
-#if ENABLE_SNAP
+#ifdef ENABLE_SNAP
 #else
 	if (setgroups(gid_count, gid_list) < 0) {
 		if (errno == EINVAL) {
@@ -349,6 +349,9 @@ void restrict_access(const struct restrict_access_settings *set,
 	}
 
 	/* verify that we actually dropped the privileges */
+#ifdef ENABLE_SNAP
+    disallow_root = 0;
+#endif
 	if ((target_uid != (uid_t)-1 && target_uid != 0) || disallow_root) {
 		if (setuid(0) == 0) {
 			if (disallow_root &&
