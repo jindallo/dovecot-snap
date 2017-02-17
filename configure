@@ -886,6 +886,7 @@ enable_silent_rules
 enable_maintainer_mode
 enable_devel_checks
 enable_asserts
+enable_snap
 with_shared_libs
 with_mem_align
 with_ioloop
@@ -1606,6 +1607,7 @@ Optional Features:
   --enable-static[=PKGS]  build static libraries [default=yes]
   --enable-fast-install[=PKGS]
                           optimize for fast installation [default=yes]
+  --enable-snap           Enable to compile Dovecot in Snap world
   --disable-libtool-lock  avoid locking (might break parallel builds)
   --disable-rpath         do not hardcode runtime library paths
   --disable-largefile     omit support for large files
@@ -3928,6 +3930,17 @@ CPPFLAGS=-I$withval/include LDFLAGS=-L$withval/lib ./configure --with-sql" "$LIN
 
 else
   want_sql=no
+fi
+
+
+
+# Check whether --enable-snap was given.
+if test "${enable_snap+set}" = set; then :
+  enableval=$enable_snap; if test x$enableval = xyes; then
+
+$as_echo "#define USE_SNAP 1" >>confdefs.h
+
+    fi
 fi
 
 

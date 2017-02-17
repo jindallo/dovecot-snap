@@ -47,6 +47,14 @@ AS_HELP_STRING([--enable-asserts], [Enable asserts (default)]),
 		AC_DEFINE(DISABLE_ASSERTS,, [Disable asserts])
 	fi)
 
+AM_CONDITIONAL(ENABLE_SNAP, false)
+AC_ARG_ENABLE(snap,
+AS_HELP_STRING([--enable-snap], [Enable to compile Dovecot in Snap world]),
+	if test x$enableval = xyes; then
+        AC_DEFINE(USE_SNAP, 1, [Define to enable to compile Dovecot in Snap world])
+        AM_CONDITIONAL(ENABLE_SNAP, true)
+    fi)
+
 AC_ARG_WITH(shared-libs,
 AS_HELP_STRING([--with-shared-libs], [Link binaries using shared Dovecot libraries (default)]),
 	want_shared_libs=$withval,
@@ -324,7 +332,6 @@ AC_DEFINE_UNQUOTED(DOVECOT_VERSION, "$PACKAGE_VERSION", [Dovecot version])
 
 AC_DEFINE([DOVECOT_VERSION_MAJOR], regexp(AC_PACKAGE_VERSION, [^\([0-9]+\)\.\([0-9]+\)], [\1]), [Dovecot major version])
 AC_DEFINE([DOVECOT_VERSION_MINOR], regexp(AC_PACKAGE_VERSION, [^\([0-9]+\)\.\([0-9]+\)], [\2]), [Dovecot minor version])
-AC_DEFINE(ENABLE_SNAP,, [This flag is used in Snap world])
 
 AC_CHECK_HEADERS(strings.h stdint.h unistd.h dirent.h malloc.h inttypes.h \
   sys/uio.h sys/sysmacros.h sys/resource.h sys/select.h libgen.h \

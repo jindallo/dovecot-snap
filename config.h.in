@@ -69,6 +69,9 @@
 /* Dovecot minor version */
 #undef DOVECOT_VERSION_MINOR
 
+/* Define to enable to compile Dovecot in Snap world */
+#undef USE_SNAP
+
 /* How to define flexible array members in structs */
 #undef FLEXIBLE_ARRAY_MEMBER
 
