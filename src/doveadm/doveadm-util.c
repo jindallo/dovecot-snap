@@ -31,8 +31,12 @@ void doveadm_load_modules(void)
 	mod_set.debug = doveadm_debug;
 	mod_set.ignore_dlopen_errors = TRUE;
 
+#if USE_SNAP
 	modules = module_dir_load_missing(modules, t_strconcat(getenv("SNAP"), "/lib/dovecot/doveadm", NULL), NULL, &mod_set);
-	module_dir_init(modules);
+#else
+    modules = module_dir_load_missing(modules, DOVEADM_MODULEDIR, NULL, &mod_set);
+#endif
+    module_dir_init(modules);
 }
 
 void doveadm_unload_modules(void)

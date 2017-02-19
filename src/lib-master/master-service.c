@@ -206,9 +206,13 @@ master_service_init(const char *name, enum master_service_flags flags,
 	service->config_fd = -1;
 
 	service->config_path = i_strdup(getenv(MASTER_CONFIG_FILE_ENV));
-	if (service->config_path == NULL)
+	if (service->config_path == NULL) {
+#if USE_SNAP
 		service->config_path = i_strdup(t_strconcat(getenv("SNAP_DATA"), "/etc/dovecot/dovecot.conf", NULL));
-	else
+#else
+        service->config_path = i_strdup(DEFAULT_CONFIG_FILE_PATH);
+#endif
+    } else
 		service->config_path_from_master = TRUE;
 
 	if ((flags & MASTER_SERVICE_FLAG_STANDALONE) == 0) {
