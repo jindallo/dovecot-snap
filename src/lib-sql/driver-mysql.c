@@ -132,6 +132,12 @@ static int driver_mysql_connect(struct sql_db *_db)
 #endif
 	}
 
+#if USE_SNAP
+    if (getenv("SNAP_DATA")) {
+        unix_socket = t_strdup_printf("%s/mysql/mysql.sock", getenv("SNAP_DATA"));
+    }
+#endif
+
 #ifdef CLIENT_MULTI_RESULTS
 	client_flags |= CLIENT_MULTI_RESULTS;
 #endif
