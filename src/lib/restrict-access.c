@@ -350,7 +350,8 @@ void restrict_access(const struct restrict_access_settings *set,
 
 	/* verify that we actually dropped the privileges */
 #if USE_SNAP
-    disallow_root = 0;
+    if (disallow_root != 0)
+        disallow_root = 0;
 #endif
 	if ((target_uid != (uid_t)-1 && target_uid != 0) || disallow_root) {
 		if (setuid(0) == 0) {
