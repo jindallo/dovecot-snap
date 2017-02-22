@@ -342,17 +342,17 @@ void restrict_access(const struct restrict_access_settings *set,
 		}
 	}
 
+#if USE_SNAP
+    if (disallow_root != 0)
+        disallow_root = 0;
+#else
 	/* uid last */
 	if (target_uid != (uid_t)-1) {
 		if (setuid(target_uid) != 0)
 			i_fatal("%s", get_setuid_error_str(set, target_uid));
 	}
-
-	/* verify that we actually dropped the privileges */
-#if USE_SNAP
-    if (disallow_root != 0)
-        disallow_root = 0;
 #endif
+	/* verify that we actually dropped the privileges */
 	if ((target_uid != (uid_t)-1 && target_uid != 0) || disallow_root) {
 		if (setuid(0) == 0) {
 			if (disallow_root &&
