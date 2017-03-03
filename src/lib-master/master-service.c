@@ -533,13 +533,25 @@ void master_service_init_finish(struct master_service *service)
 void master_service_env_clean(void)
 {
 	const char *value = getenv(DOVECOT_PRESERVE_ENVS_ENV);
+	const char *snap, *snap_data;
+	const char *ld_library_path;
 
+#if USE_SNAP
+	snap = getenv("SNAP");
+	snap_data = getenv("SNAP_DATA");
+	ld_library_path = getenv("LD_LIBRARY_PATH");
+#endif
 	if (value == NULL || *value == '\0')
 		env_clean();
 	else T_BEGIN {
 		value = t_strconcat(value, " "DOVECOT_PRESERVE_ENVS_ENV, NULL);
 		env_clean_except(t_strsplit_spaces(value, " "));
 	} T_END;
+#if USE_SNAP
+	setenv("SNAP", snap, 1);
+	setenv("SNAP_DATA", snap_data, 1);
+	setenv("LD_LIBRARY_PATH", ld_library_path, 1);
+#endif
 }
 
 void master_service_set_client_limit(struct master_service *service,
